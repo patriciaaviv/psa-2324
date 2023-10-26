@@ -11,19 +11,9 @@ def text_to_df(text):
     tokenized = text.split("|")
     temp_tokenized = tokenized
     del temp_tokenized[:6]
-    index = 0
-    count = 0
-    for x in temp_tokenized:
-        if count == 5:
-            count = 0
-            temp_tokenized.insert(index, "\n")
-            index += 1
-            continue
-        count += 1
-        index += 1
-    print(temp_tokenized)
-    df = pd.DataFrame()
-    print(df)
+    new_list = [temp_tokenized[x:x + 5] for x in range(0, len(temp_tokenized) - 2, 5)]
+    df = pd.DataFrame(new_list, columns=['lrz_id', 'username', 'gecos', 'team', 'pub_key'])
+    return df
 
 
 if __name__ == "__main__":
@@ -35,12 +25,13 @@ if __name__ == "__main__":
     password = input("Input password: ")
 
     # parse user list from website and save to csv
-
     s = requests.session()
     response = s.post(URL, auth=(username, password))
     index_page = s.get(URL)
     soup = bs(index_page.text, 'html.parser')
     results = soup.find(id="xwikicontent")
     temp_text = results.get_text("|")
-    text_to_df(temp_text)
-# for every entry in user list create a new user if not already existing and add to group psa
+    # format user data
+    users = text_to_df(temp_text)
+    # for every entry in user list create a new user if not already existing and add to group psa
+
