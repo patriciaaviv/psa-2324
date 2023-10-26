@@ -13,12 +13,14 @@ def remove_duplicates(x):
 
 def add_team_user_numbers_col(df):
     mem_numbers = []
-    count = 1
-    df['member_nr'] = df['team'].diff().eq(0)
-
-    # df_res = df.assign(member_nr=mem_numbers)
-    print(df['member_nr'])
-    return df
+    member_nr_bool = df['team'].diff().eq(0)
+    for x in member_nr_bool:
+        if not x:
+            mem_numbers.append(1)
+        else:
+            mem_numbers.append(2)
+    df_res = df.assign(member_nr=mem_numbers)
+    return df_res
 
 
 def text_to_df(text):
