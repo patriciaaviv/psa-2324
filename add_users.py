@@ -53,10 +53,10 @@ def add_users(user_df):
         uid = 1000 + 100 * int(row['team']) + int(row['member_nr'])
         # calculate secondary gid, primary gid = uid
         gid = 1000 + 100 * int(row['team'])
-        subprocess.run(['sudo', 'useradd', '-u', str(uid), '-g', str(uid), row['username'], '--disabled-password'],
-                       check=True)
-
-        subprocess.run(['sudo', 'usermod', '-aG', str(gid), row['username']], check=True)
+        subprocess.run(['sudo', 'groupadd', '-g', str(gid), f'psa2324team{row["team"]}'])
+        subprocess.run(
+            ['sudo', 'useradd', '-u', str(uid), '-g', str(uid), '-G', str(gid), row['username'], '--disabled-password'],
+            check=True)
 
 
 if __name__ == "__main__":
