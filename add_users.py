@@ -51,12 +51,6 @@ def add_users(user_df):
     temp_df = user_df[['username', 'team', 'member_nr']]
     # iterate over df and check if user exists
     for index, row in temp_df.iterrows():
-        # try:
-        #     subprocess.run(['id', row['username']], check=True)
-        #     print(f"User '{username}' already exists.")
-        #     return
-        # except subprocess.CalledProcessError:
-        #     pass
         if not check_user_exists(row['username']):
             # calculate uid
             uid = 1000 + 100 * int(row['team']) + int(row['member_nr'])
@@ -90,10 +84,13 @@ if __name__ == "__main__":
     soup = bs(index_page.text, 'html.parser')
     results = soup.find(id="xwikicontent")
     temp_text = results.get_text("|")
+
+    #####################
     # TODO temporary bug fix weil falscher input in der liste
     temp_text = temp_text.replace(
         '|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFbetiUdtIMVZ+x0VR0PCdL+IOhcVu5CW++xbEIJZTGd domi-fresh@domifresh-hplaptop15dw1xxx|',
         '')
+    #####################
 
     # format user data
     users = text_to_df(text=temp_text)
