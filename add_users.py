@@ -60,12 +60,14 @@ def add_users(user_df):
         if not check_user_exists(row['username']):
             # calculate uid
             uid = 1000 + 100 * int(row['team']) + int(row['member_nr'])
-            # calculate secondary gid, primary gid = uid
+            # calculate secondary gid
             gid = 1000 + 100 * int(row['team'])
-
+            # create secondary group
             if not check_group_exists(f'psa2324team{row["team"]}'):
                 subprocess.run(['sudo', 'groupadd', '-g', str(gid), f'psa2324team{row["team"]}'])
-
+            # create primary group
+            subprocess.run(['sudo', 'groupadd', '-g', str(uid), row['username']])
+            # create user with primary gid = uid
             subprocess.run(
                 ['sudo', 'useradd', '-u', str(uid), '-g', str(uid), '-G', str(gid), row['username'], '--disabled-password'],
                 check=True)
