@@ -43,20 +43,21 @@ def add_users(user_df):
     temp_df = user_df[['username', 'team', 'member_nr']]
     # iterate over df and check if user exists
     for index, row in temp_df.iterrows():
-        try:
-            subprocess.run(['id', row['username']], check=True)
-            print(f"User '{username}' already exists.")
-            return
-        except subprocess.CalledProcessError:
-            pass
-        # calculate uid
-        uid = 1000 + 100 * int(row['team']) + int(row['member_nr'])
-        # calculate secondary gid, primary gid = uid
-        gid = 1000 + 100 * int(row['team'])
-        subprocess.run(['sudo', 'groupadd', '-g', str(gid), f'psa2324team{row["team"]}'])
-        subprocess.run(
-            ['sudo', 'useradd', '-u', str(uid), '-g', str(uid), '-G', str(gid), row['username'], '--disabled-password'],
-            check=True)
+        # try:
+        #     subprocess.run(['id', row['username']], check=True)
+        #     print(f"User '{username}' already exists.")
+        #     return
+        # except subprocess.CalledProcessError:
+        #     pass
+        if not subprocess.run(['id', row['username']], check=True):
+            # calculate uid
+            uid = 1000 + 100 * int(row['team']) + int(row['member_nr'])
+            # calculate secondary gid, primary gid = uid
+            gid = 1000 + 100 * int(row['team'])
+            subprocess.run(['sudo', 'groupadd', '-g', str(gid), f'psa2324team{row["team"]}'])
+            subprocess.run(
+                ['sudo', 'useradd', '-u', str(uid), '-g', str(uid), '-G', str(gid), row['username'], '--disabled-password'],
+                check=True)
 
 
 if __name__ == "__main__":
