@@ -71,7 +71,7 @@ def add_users(user_df):
             subprocess.run(
                 ['sudo', 'useradd', '-u', str(uid), '-g', str(uid), '-G', str(gid), row['username']],
                 check=True)
-            # expire password to disable it, user can set it themself at next login
+            # expire password to disable it, user can set it themselves at next login
             subprocess.run(['sudo', 'passwd', '-e', row['username']])
 
 
