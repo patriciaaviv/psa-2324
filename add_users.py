@@ -53,7 +53,6 @@ def add_users(user_df):
         uid = 1000 + 100 * int(row['team']) + int(row['member_nr'])
         # calculate secondary gid, primary gid = uid
         gid = 1000 + 100 * int(row['team'])
-        #         # adduser --disabled-password
         subprocess.run(['sudo', 'useradd', '-u', str(uid), '-g', str(uid), row['username'], '--disabled-password'],
                        check=True)
 
@@ -68,7 +67,7 @@ if __name__ == "__main__":
     username = input("Input email: ")
     password = input("Input password: ")
 
-    # parse user list from website and save to csv
+    # parse user list from website
     s = requests.session()
     response = s.post(URL, auth=(username, password))
     index_page = s.get(URL)
