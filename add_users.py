@@ -15,6 +15,14 @@ def check_group_exists(name):
         return False
 
 
+def check_user_exists(name):
+    try:
+        subprocess.run(['getent', 'passwd', name], check=True, capture_output=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+
 def add_team_user_numbers_col(df):
     mem_numbers = []
     member_nr_bool = df['team'].diff().eq(0)
@@ -49,7 +57,7 @@ def add_users(user_df):
         #     return
         # except subprocess.CalledProcessError:
         #     pass
-        if not subprocess.run(['id', row['username']], check=True):
+        if not check_user_exists(row['username']):
             # calculate uid
             uid = 1000 + 100 * int(row['team']) + int(row['member_nr'])
             # calculate secondary gid, primary gid = uid
