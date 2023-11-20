@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # List of users to delete (separated by space)
-users_to_delete=("schoe" "steph" "pahll" "frisc" "zette" "klaku" "chris" "tongu" "haugs" "yesse" "stoec" "wittm" "grote" "deike" "meuse" "schub" "wothg" "songl" "horva" "kastl")>
+users_to_delete=("schoe" "steph" "pahll" "frisc" "zette" "klaku" "chris" "tongu" "haugs" "yesse" "stoec" "wittm" "grote" "deike" "meuse" "schub" "wothg" "songl" "horva" "kastl")
 # Iterate through the list of users to delete
 for username in "${users_to_delete[@]}"; do
     # Check if the user exists
