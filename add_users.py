@@ -56,7 +56,7 @@ def add_authorized_keys(name, pub_key):
 
 
 def add_users(user_df):
-    temp_df = user_df[['username', 'team', 'member_nr']]
+    temp_df = user_df[['username', 'team', 'member_nr', 'pub_key']]
     # iterate over df and check if user exists
     for index, row in temp_df.iterrows():
         if not check_user_exists(row['username']):
