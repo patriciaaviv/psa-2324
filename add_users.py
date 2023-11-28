@@ -40,7 +40,8 @@ def text_to_df(text):
     temp_tokenized = tokenized
     del temp_tokenized[:6]
     new_list = [temp_tokenized[x:x + 5] for x in range(0, len(temp_tokenized) - 2, 5)]
-    df = pd.DataFrame(new_list, columns=['username', 'gecos', 'team', 'pub_key', 'lrz_id'])
+    list_with_nulls = ['null' if s == '\xa0' else s for s in new_list]
+    df = pd.DataFrame(list_with_nulls, columns=['username', 'gecos', 'team', 'pub_key', 'lrz_id'])
     df['team'] = [x.removeprefix("Team ") for x in df['team']]
     df['team'] = [int(x) for x in df['team']]
     df = add_team_user_numbers_col(df)
