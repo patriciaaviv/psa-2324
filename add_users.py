@@ -87,7 +87,7 @@ def add_users(user_df):
                  str(gid), row['username']],
                 check=True)
             # set password to "psa", users can change it on their own later on
-            subprocess.run(['echo', '-e', 'psa\npsa', '|', 'sudo', 'passwd', row['username']])
+            subprocess.run(['echo', '-e', '"psa\npsa"', '|', 'sudo', 'passwd', row['username']])
             # create ssh directory
             filepath = f'/home/{row["username"]}'
             if not os.path.exists(filepath):
