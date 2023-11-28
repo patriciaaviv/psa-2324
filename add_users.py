@@ -87,7 +87,7 @@ def add_users(user_df):
             if rc == 0:
                 print(f"Password for user {username} changed successfully.")
             else:
-                print(f"Failed to change password for user {username}. Return code: {return_code}")
+                print(f"Failed to change password for user {username}. Return code: {rc}")
             # create ssh directory
             filepath = f'/home/{row["username"]}'
             if not os.path.exists(filepath):
