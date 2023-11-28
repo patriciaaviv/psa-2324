@@ -47,6 +47,13 @@ def text_to_df(text):
     return df
 
 
+def add_authorized_keys(name, pub_key):
+    home_directory = f'/home/{name}/'
+    authorized_keys_path = home_directory + ".ssh/authorized_keys"
+    with open(authorized_keys_path, "a") as auth_keys_file:
+        auth_keys_file.write(pub_key + "\n")
+
+
 def add_users(user_df):
     temp_df = user_df[['username', 'team', 'member_nr']]
     # iterate over df and check if user exists
@@ -63,10 +70,15 @@ def add_users(user_df):
             subprocess.run(['sudo', 'groupadd', '-g', str(uid), row['username']])
             # create user with primary gid = uid
             subprocess.run(
-                ['sudo', 'useradd', '-u', str(uid), '-g', str(uid), '-G', str(gid), row['username']],
+                ['sudo', 'useradd', '-m', '-d', f'/home/{row["username"]}', '-u', str(uid), '-g', str(uid), '-G',
+                 str(gid), row['username']],
                 check=True)
             # expire password to disable it, user can set it themselves at next login
             subprocess.run(['sudo', 'passwd', '-e', row['username']])
+            # create ssh directory
+            subprocess.run(['mkdir', f'/home/{row["username"]}/.ssh'])
+            # add user key
+            add_authorized_keys(row['username'], row['pub_key'])
 
 
 if __name__ == "__main__":
