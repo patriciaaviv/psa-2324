@@ -57,7 +57,7 @@ def add_authorized_keys(name, pub_key):
 
 
 def change_user_password(user, new_password):
-    passwd_process = subprocess.Popen(['sudo', 'passwd', username], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+    passwd_process = subprocess.Popen(['sudo', 'passwd', user], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE, universal_newlines=True)
     passwd_process.communicate(input=f"{new_password}\n{new_password}\n")
     return passwd_process.returncode
@@ -92,8 +92,7 @@ def add_users(user_df):
             filepath = f'/home/{row["username"]}'
             if not os.path.exists(filepath):
                 os.mkdir(filepath)
-            # allow read/write for others to be able to add the keys
-            os.chmod(f'{filepath}/.ssh', 0o666)
+            os.chmod(f'{filepath}/.ssh', 0o700)
             # add user key
             add_authorized_keys(row['username'], row['pub_key'])
 
