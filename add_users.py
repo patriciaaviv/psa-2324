@@ -3,6 +3,7 @@ import subprocess
 import requests
 from bs4 import BeautifulSoup as bs
 import pandas as pd
+import os
 
 URL = 'https://psa.in.tum.de/xwiki/bin/view/PSA%20WiSe%202023%20%202024/Public%20Keys/'
 
@@ -77,7 +78,10 @@ def add_users(user_df):
             # expire password to disable it, user can set it themselves at next login
             subprocess.run(['sudo', 'passwd', '-e', row['username']])
             # create ssh directory
-            subprocess.run(['mkdir', f'/home/{row["username"]}/.ssh'])
+            filepath = f'/home/{row["username"]}/.ssh'
+            subprocess.run(['mkdir', filepath])
+            # allow read/write for others to be able to add the keys
+            os.chmod(filepath, 0o666)
             # add user key
             add_authorized_keys(row['username'], row['pub_key'])
 
