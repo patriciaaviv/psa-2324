@@ -95,6 +95,7 @@ def add_users(user_df):
             if not os.path.exists(f'{filepath}/.ssh'):
                 os.mkdir(f'{filepath}/.ssh')
             os.chmod(f'{filepath}/.ssh', 0o700)
+            os.chown(filepath, uid=uid, gid=gid)
             # add user key
             add_authorized_keys(row['username'], row['pub_key'])
 
