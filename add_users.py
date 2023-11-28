@@ -57,13 +57,9 @@ def add_authorized_keys(name, pub_key):
 
 
 def change_user_password(user, new_password):
-    passwd_process = subprocess.Popen(['passwd', username], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+    passwd_process = subprocess.Popen(['sudo', 'passwd', username], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE, universal_newlines=True)
-    passwd_process.stdin.write(f"{new_password}\n")
-    passwd_process.stdin.write(f"{new_password}\n")
-    passwd_process.stdin.flush()
-    passwd_process.stdin.close()
-    passwd_process.wait()
+    passwd_process.communicate(input=f"{new_password}\n{new_password}\n")
     return passwd_process.returncode
 
 
@@ -87,7 +83,11 @@ def add_users(user_df):
                  str(gid), row['username']],
                 check=True)
             # set password to "psa", users can change it on their own later on
-            subprocess.run(['echo', '-e', '"psa\npsa"', '|', 'sudo', 'passwd', row['username']])
+            rc = change_user_password(row['username'], 'psa')
+            if rc == 0:
+                print(f"Password for user {username} changed successfully.")
+            else:
+                print(f"Failed to change password for user {username}. Return code: {return_code}")
             # create ssh directory
             filepath = f'/home/{row["username"]}'
             if not os.path.exists(filepath):
