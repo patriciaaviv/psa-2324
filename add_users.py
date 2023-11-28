@@ -90,8 +90,10 @@ def add_users(user_df):
                 print(f"Failed to change password for user {row['username']}. Return code: {rc}")
             # create ssh directory
             filepath = f'/home/{row["username"]}'
-            if not os.path.exists(f'{filepath}/.ssh'):
+            if not os.path.exists(filepath):
                 os.mkdir(filepath)
+            if not os.path.exists(f'{filepath}/.ssh'):
+                os.mkdir(f'{filepath}/.ssh')
             os.chmod(f'{filepath}/.ssh', 0o700)
             # add user key
             add_authorized_keys(row['username'], row['pub_key'])
