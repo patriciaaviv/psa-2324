@@ -86,18 +86,14 @@ def add_users(user_df):
                 ['sudo', 'useradd', '-m', '-d', f'/home/{row["username"]}', '-u', str(uid), '-g', str(uid), '-G',
                  str(gid), row['username']],
                 check=True)
-            # expire password to disable it, user can set it themselves at next login
-            # subprocess.run(['sudo', 'passwd', '-e', row['username']])
-            return_code = change_user_password(row['username'], 'psa')
-            if return_code == 0:
-                print(f"Password for user {username} changed successfully.")
-            else:
-                print(f"Failed to change password for user {username}. Return code: {return_code}")
+            # set password to "psa", users can change it on their own later on
+            subprocess.run(['echo', f'{row["username"]}:psa', '|', 'sudo', 'passwd', row['username']])
             # create ssh directory
-            filepath = f'/home/{row["username"]}/.ssh'
-            subprocess.run(['mkdir', filepath])
+            filepath = f'/home/{row["username"]}'
+            if not os.path.exists(filepath):
+                os.mkdir(filepath)
             # allow read/write for others to be able to add the keys
-            os.chmod(filepath, 0o666)
+            os.chmod(f'{filepath}/.ssh', 0o666)
             # add user key
             add_authorized_keys(row['username'], row['pub_key'])
 
