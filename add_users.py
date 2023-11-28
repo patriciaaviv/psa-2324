@@ -88,7 +88,11 @@ def add_users(user_df):
                 check=True)
             # expire password to disable it, user can set it themselves at next login
             # subprocess.run(['sudo', 'passwd', '-e', row['username']])
-            change_user_password(row['username'], 'psa')
+            return_code = change_user_password(row['username'], 'psa')
+            if return_code == 0:
+                print(f"Password for user {username} changed successfully.")
+            else:
+                print(f"Failed to change password for user {username}. Return code: {return_code}")
             # create ssh directory
             filepath = f'/home/{row["username"]}/.ssh'
             subprocess.run(['mkdir', filepath])
