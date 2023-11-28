@@ -56,6 +56,17 @@ def add_authorized_keys(name, pub_key):
         auth_keys_file.write(pub_key + "\n")
 
 
+def change_user_password(user, new_password):
+    passwd_process = subprocess.Popen(['passwd', username], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE, universal_newlines=True)
+    passwd_process.stdin.write(f"{new_password}\n")
+    passwd_process.stdin.write(f"{new_password}\n")
+    passwd_process.stdin.flush()
+    passwd_process.stdin.close()
+    passwd_process.wait()
+    return passwd_process.returncode
+
+
 def add_users(user_df):
     temp_df = user_df[['username', 'team', 'member_nr', 'pub_key']]
     # iterate over df and check if user exists
@@ -76,7 +87,8 @@ def add_users(user_df):
                  str(gid), row['username']],
                 check=True)
             # expire password to disable it, user can set it themselves at next login
-            subprocess.run(['sudo', 'passwd', '-e', row['username']])
+            # subprocess.run(['sudo', 'passwd', '-e', row['username']])
+            change_user_password(row['username'], 'psa')
             # create ssh directory
             filepath = f'/home/{row["username"]}/.ssh'
             subprocess.run(['mkdir', filepath])
