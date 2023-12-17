@@ -5,7 +5,7 @@ template="$filepath/template"
 
 
 
-users=("schoe" "steph" "pahll" "frisc" "zette" "klaku" "dietr" "tongu" "haugs" "yesse" "stoec" "wittm" "grote" "deike" "meuse" "schub" "wothg" "songl" "horva" "kastl")
+users=("schoe" "steph" "pahll" "frisc" "zette" "klaku" "dietr" "tongu" "haugs" "stoec" "wittm" "grote" "deike" "meuse" "schub" "wothg" "songl" "horva" "kastl")
 
 for user in "${users[@]}"; do
 
