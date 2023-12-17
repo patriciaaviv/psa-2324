@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 import pandas as pd
 import os
+from getpass import getpass
 
 URL = 'https://psa.in.tum.de/xwiki/bin/view/PSA%20WiSe%202023%20%202024/Public%20Keys/'
 
@@ -106,7 +107,7 @@ if __name__ == "__main__":
         subprocess.run(['sudo', 'groupadd', 'psa2324', '-g', '1099'], text=True)
 
     username = input("Input email: ")
-    password = input("Input password: ")
+    password = getpass("Input password: ")
 
     # parse user list from website
     s = requests.session()
