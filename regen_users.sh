@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# introduces the variable "users"
+source ./psa_users.sh
+
 # List of users to delete (separated by space)
 # chris and yesse are gone now, but still in here in case you run this on old machine that still has them
-users_to_delete=("schoe" "steph" "pahll" "frisc" "zette" "klaku" "chris" "dietr" "tongu" "haugs" "yesse" "prinz" "stoec" "wittm" "grote" "deike" "meuse" "schub" "wothg" "songl" "horva" "kastl")
+users_to_delete=users
 # Iterate through the list of users to delete
 for username in "${users_to_delete[@]}"; do
     # Check if the user exists
