@@ -7,7 +7,7 @@ source ./psa_users.sh
 for username in "${users_to_delete[@]}"; do
     # Check if the user exists
     if id "$username" &>/dev/null; then
-        # Delete user (without removing home directory)
+        # Delete user (including home dir)
         sudo deluser --remove-all-files "$username"
         echo "Deleted user: $username"
     else
