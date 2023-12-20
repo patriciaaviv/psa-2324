@@ -3,10 +3,7 @@
 # introduces the variable "users"
 source ./psa_users.sh
 
-# List of users to delete (separated by space)
-# chris and yesse are gone now, but still in here in case you run this on old machine that still has them
-users_to_delete=users
-# Iterate through the list of users to delete
+# delete users
 for username in "${users_to_delete[@]}"; do
     # Check if the user exists
     if id "$username" &>/dev/null; then
