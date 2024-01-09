@@ -1,0 +1,17 @@
+#!/bin/bash
+
+failed_tests=0
+
+fail() {
+    ((failed_tests++))
+    echo "FAIL $@"
+}
+
+ok() {
+    echo "OK $@"
+}
+
+
+
+
+echo "Tests failed: $failed_tests"
