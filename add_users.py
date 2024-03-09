@@ -80,7 +80,7 @@ def add_users(user_df):
             subprocess.run(['sudo', 'groupadd', '-g', str(uid), row['username']])
             # create user with primary gid = uid
             subprocess.run(
-                ['sudo', 'useradd', '-m', '-d', f'/home/{row["username"]}', '-u', str(uid), '-g', str(uid), '-G',
+                ['sudo', 'useradd', '-m', '-d', f'/home/{row["username"]}', '-s', '/bin/bash', '-u', str(uid), '-g', str(uid), '-G',
                  str(gid), row['username']],
                 check=True)
             # set password to "psa", users can change it on their own later on
